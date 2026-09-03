@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StatusBar as RNStatusBar, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
-import { Newsreader_400Regular, Newsreader_500Medium } from '@expo-google-fonts/newsreader';
+import { LinearGradient } from './src/web/LinearGradient';
+import { SafeAreaProvider, SafeAreaView } from './src/web/SafeArea';
+import {
+  useFonts,
+  DMSans_400Regular, DMSans_500Medium, DMSans_700Bold,
+  Newsreader_400Regular, Newsreader_500Medium,
+} from './src/web/fonts';
 
 import { BACKDROP, C } from './src/theme';
 import { cardsFor, Destination } from './src/data';

@@ -1,33 +1,35 @@
 # Detour — handoff instructions for the receiving agent
 
-You have been given this project as **three zip archives**. Read this file
-completely before running anything. Everything below is verified against the
-actual project, not assumed.
+Read this file completely before running anything. Everything below is verified
+against the actual project, not assumed.
 
 ---
 
 ## 1. What this project is
 
-**Detour** (package name `detour`, app display name `Detour`) is an
-**Expo + React Native + TypeScript** prototype of a travel app with a scripted
-multi-agent "Scout" runtime. It runs **on web and on a real iPhone via Expo Go**.
+**Detour** (package name `detour`, display name `Detour`) is a
+**React Native Web + Vite + TypeScript** prototype of a travel app with a
+scripted multi-agent "Scout" runtime. It is a **web project**: it builds to
+static files in `dist/` and runs in a browser.
 
 Stack, pinned in `package.json`:
 
-- Expo SDK **~57.0.19**
-- React Native **0.86.3**
-- React **19.2.3**
-- TypeScript **~6.0.3**
-- `react-native-web` 0.21, `react-native-svg` 15.15, `expo-linear-gradient`,
-  `expo-font`, `react-native-safe-area-context`
-- Google fonts via `@expo-google-fonts/*`: DM Sans, Newsreader, Space Grotesk,
-  IBM Plex Mono
+- React **19.2** and React DOM
+- **react-native-web** 0.21 — the UI is authored as React Native components
+- **Vite** 8 with `@vitejs/plugin-react`
+- `react-native-svg` 15.15 for the pixel art and icons
+- `@fontsource/dm-sans` and `@fontsource/newsreader` for bundled webfonts
+- TypeScript 5.9
 
-> **Expo has changed.** This is SDK 57. Before writing any code, read the exact
-> versioned docs at <https://docs.expo.dev/versions/v57.0.0/>. Do not rely on
-> memory of older Expo APIs. This rule comes from the project's own `AGENTS.md`
-> and is repeated here because it is the most common source of wrong code in
-> this repo.
+> **This project was previously built with Expo (SDK 57) and no longer is.**
+> Expo, `expo-font`, `expo-linear-gradient`, `expo-status-bar` and
+> `@expo-google-fonts/*` were removed so the project imports into web-only
+> platforms such as Base44, which reject a repo carrying `expo` in
+> `package.json`. The rendered result is unchanged. **Do not reintroduce an
+> Expo dependency** — it will break the import. The four native modules that
+> were needed are now local implementations under `src/web/`; see section 5.
+> Native builds and Expo Go are no longer supported; the previous Expo setup is
+> recoverable from git history.
 
 There is **no backend and no model call**. Every number is a literal in
 `src/data.ts`; agent traces are scripted in `src/agentRuntime.ts`. The one real
@@ -36,120 +38,80 @@ cleanly offline.
 
 ---
 
-## 2. The three archives
+## 2. Getting the project
 
-The project is ~43 MB of mostly already-compressed PNG, so zip cannot shrink it
-further. It is split three ways to keep every archive under 20 MB. Nothing was
-modified or omitted — the three zips together are a byte-for-byte copy of all
-78 project files.
-
-| # | File | Size | Contents |
-|---|------|------|----------|
-| 1 | `detour-1-code.zip` | 9.1 MB | All source, config and design: `src/`, `App.tsx`, `index.ts`, `package.json`, `package-lock.json`, `tsconfig.json`, `app.json`, `AGENTS.md`, `CLAUDE.md`, `LICENSE`, `.gitignore`, `.claude/`, `design/`, and the icon/splash files in `assets/` |
-| 2 | `detour-2-explore-a.zip` | 17 MB | `assets/explore/` — 8 photos, `austin-counter` → `dewakan` |
-| 3 | `detour-3-explore-b.zip` | 18 MB | `assets/explore/` — 8 photos, `ilham` → `vinyl-room` |
-
-**Not included:** `node_modules/` (~372 MB) and `.expo/`. Both are regenerated
-locally — see step 4. `package-lock.json` **is** included, so installs are
-reproducible.
-
-### Why all three are mandatory
-
-The 16 explore photos are not optional media. They are pulled in with
-`require()` at **bundle time** in `src/data.ts` (lines 32-46) and
-`src/screens/Swarm.tsx` (lines 53-55, 97, 101). Metro resolves those paths while
-building. If you unpack only zip 1, **the bundle fails to build** with a module
-resolution error naming a missing `assets/explore/*.png`. It is not a runtime
-placeholder or a broken-image square — it is a hard build failure.
-
----
-
-## 3. Combining the archives
-
-All three zips store paths relative to the project root and do not overlap, so
-they unpack on top of each other. Order does not matter.
+The repository is the source of truth:
 
 ```bash
-mkdir Detour-project && cd Detour-project
-
-unzip ../detour-1-code.zip
-unzip ../detour-2-explore-a.zip
-unzip ../detour-3-explore-b.zip
+git clone https://github.com/IncreaseUnusual/detour.git
+cd detour
 ```
 
-On macOS, prefer this over double-clicking in Finder: Finder renames colliding
-folders (`explore 2`) instead of merging them, which produces exactly the
-missing-asset build failure described above.
+`node_modules/`, `.expo/` and `dist/` are gitignored and regenerated.
+`package-lock.json` is committed, so installs are reproducible.
 
-### Verify before you build
+The 16 photos in `assets/explore/` are **not optional media**. They are pulled
+in with `require()` at bundle time in `src/data.ts` (lines 32-46) and
+`src/screens/Swarm.tsx` (lines 53-55, 97, 101), so a missing file is a hard
+build failure naming the path, not a broken-image square.
+
+Three zip archives of this project were circulated before it was on GitHub.
+They contain the older Expo version and are **superseded** by this repo.
+
+## 3. Sanity checks before you build
 
 ```bash
 ls assets/explore/*.png | wc -l      # must be exactly 16
 ls src/screens/*.tsx | wc -l         # must be 8
-test -f App.tsx && test -f package.json && echo "root ok"
+test -f App.tsx && test -f vite.config.ts && echo "root ok"
 ```
-
-If the first check prints anything other than 16, one of the explore zips did
-not unpack into the project root. Fix that before running `npm install` —
-otherwise you will debug a bundler error whose real cause is an unpack mistake.
-
----
 
 ## 4. Installing and running
 
 ```bash
-npm install              # restores node_modules from package-lock.json, ~1 min
+npm install          # ~40 packages, clean audit
+npm run dev          # http://localhost:8081
+npm run build        # static output in dist/
+npm run preview      # serve the built output
+npm run typecheck    # tsc --noEmit, currently clean
 ```
 
-Expect `npm install` to report a few moderate advisories and a deprecated
-transitive `uuid`. That is the normal state of this dependency tree. **Do not**
-run `npm audit fix --force` — it will force-upgrade pinned Expo packages and
-break the SDK 57 lockstep between `expo`, `react-native` and `react`.
-
-Then pick a target:
-
-```bash
-npx expo start --web     # browser at http://localhost:8081
-npx expo start           # QR / exp://<lan-ip>:8081 for Expo Go on a device
-npm run ios              # requires Xcode
-npm run android          # requires Android SDK
-```
-
-`npm start`, `npm run web`, `npm run ios`, `npm run android` are the scripts
-defined in `package.json`.
+`npm start` is an alias of `npm run dev`, so a platform that runs the
+conventional script gets the dev server.
 
 ### Confirming it actually works
 
-A returned HTTP 200 on `http://localhost:8081` only proves the dev server is
-listening — it does **not** prove the app compiles. Force a real bundle:
+A 200 from `http://localhost:8081` only proves the server is listening. The
+build is the real check:
 
 ```bash
-curl -s "http://localhost:8081/index.bundle?platform=web&dev=true" \
-  -o /tmp/bundle.js -w "http=%{http_code} size=%{size_download}\n"
+npm run build
 ```
 
-A healthy build is **HTTP 200 at roughly 2.6 MB**. A compile or missing-asset
-error returns a small JSON error body instead — check the size, not just the
-status code.
+A healthy build emits `dist/assets/index-*.js` at roughly **557 kB**
+(~168 kB gzipped) plus the 16 photos. Vite warns that the chunk is over 500 kB;
+that is expected for a single-bundle app and is not an error.
 
-Entry point is `index.ts` → `registerRootComponent(App)` → `App.tsx`.
+Vite does not typecheck during a build, so run `npm run typecheck` separately
+when you change types.
 
 ### What you should see
 
-The launch route is onboarding, not the feed: splash → three intro pages → four
-questions → "heading out" → main app. There is a returning-user button that
-skips it. On desktop the app renders inside a **390×812 phone frame** with a
-painted status bar and home pill; on a real handset it renders full-bleed to the
-safe area. That switch is the `framed` flag in `App.tsx`, keyed off window width
-— a desktop-looking frame is correct behaviour, not a layout bug.
+The launch route is onboarding, not the feed: splash, three intro pages, four
+questions, "heading out", then the main app. A returning-user button skips it.
 
----
+`App.tsx` returns an empty view until the webfonts report ready
+(`if (!loaded) return <View style={s.fill} />`), so a blank frame for a moment
+on first load is the font gate, not a crash. If a font fails outright the gate
+opens anyway and the app renders in fallback type.
 
 ## 5. Project map
 
 ```
 App.tsx                  root component, onboarding + tab state machine
-index.ts                 registerRootComponent entry
+index.html               page shell, Vite entry
+vite.config.ts           react-native -> react-native-web alias, .web.* resolution
+src/main.tsx             web entry, mounts via AppRegistry.runApplication
 src/theme.ts             C colors, F font families, BACKDROP, cardShell
 src/ui.tsx               Serif Sans Kicker Card Pill KV Button PulseDot
 src/icons.tsx            PixelRows (run-length sprites), PixelAgent, Icon, P
@@ -162,8 +124,27 @@ src/components/          Chrome.tsx (status bar, tab bar, home pill),
 src/screens/             Feed, Detail, Confirm, Swarm, Trips, Profile,
                          AskScout, Arrival
 src/screens/onboarding/  Intro.tsx (splash, pager, heading out), Questions.tsx
+src/web/                 web implementations of native modules (below)
 design/                  the design spec — see below
 assets/explore/          16 photos, required at bundle time
+```
+
+### `src/web/` — the four replaced native modules
+
+Everything else in the tree imports from `'react-native'` and knows nothing
+about the web. These four modules absorb the difference:
+
+| Module | Replaces | Implementation |
+|---|---|---|
+| `LinearGradient.tsx` | `expo-linear-gradient` | Same props (`colors`, `start`, `end`, `locations`). Paints a CSS `linear-gradient` on an absolutely positioned layer behind the children, so the View's own flex and padding are untouched. Start/end points convert to a CSS angle with `atan2(dx, -dy)`; corner radii are copied onto the layer so the gradient does not overhang them. |
+| `fonts.ts` | `expo-font` + `@expo-google-fonts/*` | Registers `@font-face` rules under the exact family names `theme.ts` already uses (`DMSans_500Medium`, `Newsreader_400Regular`, ...), from woff2 files bundled via @fontsource. `useFonts` keeps the same signature and `[loaded]` tuple, resolving off `document.fonts`. A font that fails to load opens the gate rather than hanging the splash. |
+| `SafeArea.tsx` | `react-native-safe-area-context` | `SafeAreaProvider` renders its children; `SafeAreaView` applies the browser's `env(safe-area-inset-*)`. |
+| `globals.d.ts` | RN's `__DEV__` | Declared for TypeScript; defined by Vite. |
+
+Because `theme.ts` was left alone, `fontFamily: F.med` still resolves and every
+`<Text>` in the app is untouched.
+
+```
 ```
 
 All screens listed in `design/STATUS.md` are marked **done**. The one unbuilt
@@ -222,27 +203,15 @@ Reuse the shared contracts in `theme.ts`, `ui.tsx`, `icons.tsx`, `art.tsx`,
 
 ---
 
-## 9. Re-splitting after you change things
+## 9. Deploying and importing elsewhere
 
-If you need to hand the project on again, rebuild the same way — exclude the
-generated directories, then split the explore photos across two archives:
+It is a standard static Vite site: build command `npm run build`, output
+directory `dist`, no server and no environment variables. That is what Netlify,
+Vercel, Cloudflare Pages or Base44 need to know.
 
-```bash
-zip -rq detour-1-code.zip . \
-  -x "node_modules/*" ".expo/*" "assets/explore/*" "*.DS_Store"
-
-ls assets/explore/*.png | sort > /tmp/all.txt
-head -8 /tmp/all.txt | zip -q detour-2-explore-a.zip -@
-tail -8 /tmp/all.txt | zip -q detour-3-explore-b.zip -@
-```
-
-Verify coverage before sending — file count in the zips must equal the file
-count on disk:
-
-```bash
-find . -type f -not -path "./node_modules/*" -not -path "./.expo/*" \
-  -not -name ".DS_Store" | wc -l
-for z in detour-*.zip; do unzip -Z1 "$z"; done | grep -v '/$' | sort -u | wc -l
-```
-
-Both numbers were **78** at the time this archive was created.
+If an import tool rejects the repo as a mobile project, the cause is a
+dependency name in `package.json`. `react-native-web` and `react-native-svg`
+are web libraries despite their names and must stay. `react-native` itself is
+**not** a dependency: it is present in `node_modules` only because
+`@types/react-native-web` pulls it in for its type definitions, which is what
+`npm run typecheck` reads. Do not promote it to a direct dependency.

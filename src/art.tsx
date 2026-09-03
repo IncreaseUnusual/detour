@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle, Ellipse, Path, Rect } from 'react-native-svg';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from './web/LinearGradient';
 import { PixelRows } from './icons';
 
 /* ------------------------------------------------------------------ *

@@ -3,15 +3,19 @@
 Living handoff doc. Update it when you finish a screen.
 
 ## What this is
-An Expo (React Native + TypeScript) port of the Claude Design project
-`c59ec275-e2fd-47cb-974f-6ceb19eb7a57`. Runs on web and on a real iPhone
-via Expo Go. No Xcode on the build machine, so no simulator and no native
-build: Expo Go or the browser only.
+A React Native Web port of the Claude Design project
+`c59ec275-e2fd-47cb-974f-6ceb19eb7a57`. Built with Vite and TypeScript, it
+runs in the browser: desktop, or a phone browser on the LAN.
+
+Originally an Expo app. Expo was removed so the repo imports into web-only
+platforms; the four native modules it needed now live in `src/web/`, and
+`theme.ts` and every screen were left untouched. Expo Go and native builds
+are no longer supported. See `AGENT-INSTRUCTIONS.md`.
 
 ## Run it
-    cd scout-app
-    npx expo start --web     # http://localhost:8081
-    npx expo start           # then exp://<lan-ip>:8081 in Expo Go
+    npm install
+    npm run dev     # http://localhost:8081
+    npm run build   # static output in dist/
 
 Desktop renders inside a 390x812 phone frame with a painted status bar and
 home pill. A real handset renders full bleed on the device safe area. The

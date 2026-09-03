@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from '../web/LinearGradient';
 import { Serif, Sans, Kicker, Card, Pill, KV, Button } from '../ui';
 import { Icon, P, PixelAgent } from '../icons';
 import { BY_ID, Card as CardType, cardImage } from '../data';

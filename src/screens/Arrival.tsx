@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, ScrollView, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from '../web/LinearGradient';
 import { C, F } from '../theme';
 import { Serif, Sans, Button } from '../ui';
 import { Costumed } from '../art';
