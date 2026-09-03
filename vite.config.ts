@@ -40,7 +40,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
 
-  server: { port: 8081, host: true },
-  preview: { port: 8081, host: true },
+  server: { port: 8081, host: true, allowedHosts: true },
+  preview: { port: 8081, host: true, allowedHosts: true },
   build: { outDir: 'dist', sourcemap: false },
 }));
