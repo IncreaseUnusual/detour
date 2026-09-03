@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+  html, body { margin: 0; background: #dcebf6; }
+  a { color: #3d8ee8; }
+  a:hover { color: #2c6cb5; }
+  button { font: inherit; cursor: pointer; }
+  button:focus-visible { outline: 2px solid #3d8ee8; outline-offset: 2px; }
+  #dc-root div { scrollbar-width: none; -ms-overflow-style: none; }
+  #dc-root div::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  @keyframes scoutPulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+  @keyframes scoutBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:radial-gradient(60% 45% at 15% 10%, #eaf6f7 0%, rgba(234,246,247,0) 60%), radial-gradient(55% 40% at 88% 78%, #eef6fb 0%, rgba(238,246,251,0) 60%), linear-gradient(170deg,#d9ebf7 0%,#e8f2f9 55%,#dfeef7 100%);font-family:'DM Sans',system-ui,sans-serif;color:#1b1f24;padding:48px 32px 72px;display:flex;flex-direction:column;gap:40px;align-items:center">
+
+  <div style="display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;max-width:560px">
+    <div style="font-family:'Newsreader',serif;font-size:28px;line-height:1.15">Scout — icon &amp; onboarding</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#67707a">App mark, three intro screens, four questions in Scout’s own voice, and the moment it heads out. Chips and options are tappable.</div>
+  </div>
+
+  <div style="width:100%;max-width:1180px;background:#ffffff;border-radius:32px;padding:32px;box-shadow:0 0 0 1px rgba(27,31,36,.05);display:flex;flex-wrap:wrap;gap:36px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">App icon</div>
+      <div style="font-family:'Newsreader',serif;font-size:24px;line-height:1.2">A scout on the ridge</div>
+      <div style="font-size:13px;line-height:1.5;color:#67707a;max-width:270px">The pixel figure reads at 60px and survives down to the 29px settings size as a silhouette on the dusk wash.</div>
+    </div>
+    <div style="display:flex;gap:22px;align-items:flex-end;flex-wrap:wrap">
+      <sc-for list="{{ iconSizes }}" as="ic" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+          {{ ic.node }}
+          <div style="font-size:10.5px;color:#8a9199">{{ ic.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center;margin-left:auto;background:linear-gradient(160deg,#8cb8e0,#b6d3ea);border-radius:26px;padding:20px 24px">
+      <sc-for list="{{ homeIcons }}" as="h" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:7px;align-items:center;width:64px">
+          {{ h.node }}
+          <div style="font-size:10.5px;color:#2c3d4f;text-align:center">{{ h.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px;justify-content:center;max-width:1600px">
+
+    <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#ffffff,#f3f8fc);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+        <span>9:41</span><span style="color:#8a9199">Welcome</span>
+      </div>
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:26px;padding:24px 28px;text-align:center">
+        <div style="animation:scoutBob 3.4s ease-in-out infinite">{{ splashIcon }}</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Newsreader',serif;font-size:34px;line-height:1.1">Scout</div>
+          <div style="font-size:14.5px;line-height:1.55;color:#67707a">Ready when you are. I'll wander around in the background and keep an eye out for things you might love.</div>
+        </div>
+      </div>
+      <div style="flex:none;padding:0 28px 34px;display:flex;flex-direction:column;gap:10px">
+        <button style="border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">Come along</button>
+        <button style="border:none;border-radius:999px;background:#f0f3f7;color:#4a5259;padding:17px;font-size:15px">I've been here before</button>
+      </div>
+    </div>
+
+    <sc-for list="{{ intros }}" as="s" hint-placeholder-count="3">
+      <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#ffffff,#f4f7fa);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+        <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+          <span>9:41</span><span style="color:#8a9199">{{ s.step }}</span>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:20px 28px">
+          <div style="height:250px;border-radius:30px;background:{{ s.wash }};display:flex;align-items:center;justify-content:center;overflow:hidden">{{ s.art }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px;text-align:center">
+            <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.18;text-wrap:pretty">{{ s.title }}</div>
+            <div style="font-size:14px;line-height:1.55;color:#67707a;text-wrap:pretty">{{ s.body }}</div>
+          </div>
+        </div>
+        <div style="flex:none;padding:0 28px 34px;display:flex;flex-direction:column;gap:18px;align-items:center">
+          <div style="display:flex;gap:7px">{{ s.dots }}</div>
+          <button style="width:100%;border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">{{ s.cta }}</button>
+        </div>
+      </div>
+    </sc-for>
+
+    <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#ffffff,#f4f7fa);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+        <span>9:41</span><span style="color:#8a9199">1 of 4</span>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:14px 24px 20px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">Taste profile</div>
+          <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.18">What would make this trip?</div>
+          <div style="font-size:13.5px;line-height:1.5;color:#67707a">Pick whatever rings true. I'll weigh everything I find against these.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <sc-for list="{{ tastes }}" as="t" hint-placeholder-count="6">
+            <div onClick="{{ t.toggle }}" style="background:{{ t.bg }};border-radius:20px;padding:14px;box-shadow:{{ t.ring }};display:flex;flex-direction:column;gap:12px;cursor:pointer;min-height:104px">
+              {{ t.art }}
+              <div style="font-size:13.5px;font-weight:500;line-height:1.25">{{ t.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:none;padding:0 24px 34px;display:flex;flex-direction:column;gap:14px;align-items:center">
+        <div style="font-size:12px;color:#8a9199">{{ tasteCount }} selected</div>
+        <button style="width:100%;border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">Continue</button>
+      </div>
+    </div>
+
+    <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#ffffff,#f4f7fa);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+        <span>9:41</span><span style="color:#8a9199">2 of 4</span>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:14px 24px 20px;display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">How adventurous?</div>
+          <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.18">How much should I surprise you?</div>
+        </div>
+        <div style="background:#f3f8fc;border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:18px;align-items:center">
+          {{ dialArt }}
+          <div style="font-family:'Newsreader',serif;font-size:22px">{{ dialLabel }}</div>
+          <div style="width:100%;display:flex;gap:6px">
+            <sc-for list="{{ dialSteps }}" as="d" hint-placeholder-count="10">
+              <div onClick="{{ d.set }}" style="flex:1;height:38px;border-radius:8px;background:{{ d.bg }};cursor:pointer"></div>
+            </sc-for>
+          </div>
+          <div style="width:100%;display:flex;justify-content:space-between;font-size:11.5px;color:#8a9199">
+            <span>Only what I asked for</span><span>Anything remarkable</span>
+          </div>
+        </div>
+        <div style="font-size:13.5px;line-height:1.55;color:#67707a">{{ dialBody }}</div>
+      </div>
+      <div style="flex:none;padding:0 24px 34px">
+        <button style="width:100%;border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">Continue</button>
+      </div>
+    </div>
+
+    <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#ffffff,#f4f7fa);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+        <span>9:41</span><span style="color:#8a9199">3 of 4</span>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:14px 24px 20px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">Spend ceiling</div>
+          <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.18">How far can I go without asking?</div>
+          <div style="font-size:13.5px;line-height:1.5;color:#67707a">Anything above this and I'll ask you first instead of grabbing it.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ ceilings }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.set }}" style="background:{{ c.bg }};border-radius:20px;padding:16px;box-shadow:{{ c.ring }};display:flex;align-items:center;gap:14px;cursor:pointer">
+              {{ c.art }}
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:15px;font-weight:500">{{ c.label }}</div>
+                <div style="font-size:12px;color:#67707a">{{ c.note }}</div>
+              </div>
+              <div style="flex:none;width:20px;height:20px;border-radius:50%;background:{{ c.dot }};box-shadow:{{ c.dotRing }}"></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:none;padding:0 24px 34px">
+        <button style="width:100%;border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">Continue</button>
+      </div>
+    </div>
+
+    <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#ffffff,#f4f7fa);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+        <span>9:41</span><span style="color:#8a9199">4 of 4</span>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:14px 24px 20px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">Standing permissions</div>
+          <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.18">When can I just go ahead?</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ perms }}" as="p" hint-placeholder-count="4">
+            <div onClick="{{ p.toggle }}" style="background:#ffffff;border-radius:20px;padding:16px;box-shadow:0 0 0 1px rgba(27,31,36,.06);display:flex;align-items:center;gap:14px;cursor:pointer">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:14.5px;font-weight:500;line-height:1.3">{{ p.label }}</div>
+                <div style="font-size:12px;line-height:1.4;color:#67707a">{{ p.note }}</div>
+              </div>
+              <div style="flex:none;width:46px;height:28px;border-radius:999px;background:{{ p.track }};display:flex;align-items:center;padding:3px;justify-content:{{ p.justify }}">
+                <div style="width:22px;height:22px;border-radius:50%;background:#ffffff;box-shadow:0 1px 3px rgba(27,31,36,.25)"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size:12.5px;line-height:1.5;color:#8a9199">Whatever I do lands in your feed with its source. Nothing happens off the record.</div>
+      </div>
+      <div style="flex:none;padding:0 24px 34px">
+        <button style="width:100%;border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">Go have a look</button>
+      </div>
+    </div>
+
+    <div style="width:360px;height:740px;border-radius:42px;background:linear-gradient(180deg,#f5fafd,#eef6fb);box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 22px 50px rgba(31,58,102,.14);overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12.5px;font-weight:500">
+        <span>9:41</span><span style="color:#8a9199">Looking around</span>
+      </div>
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:24px 28px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'Newsreader',serif;font-size:28px;line-height:1.15">On it. I'm heading out.</div>
+          <div style="font-size:14px;line-height:1.55;color:#67707a">I'll be looking around Lisbon every ninety seconds until Sunday. You'll only hear from me when I find something worth your evening.</div>
+        </div>
+        <div style="background:#ffffff;border-radius:26px;padding:18px;box-shadow:0 0 0 1px rgba(27,31,36,.05);display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ roster }}" as="r" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:12px">
+              {{ r.art }}
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                <div style="font-size:14px;font-weight:500">{{ r.name }}</div>
+                <div style="font-size:11.5px;color:#8a9199">{{ r.watching }}</div>
+              </div>
+              <div style="flex:none;display:flex;align-items:center;gap:6px;font-size:11px;color:#3d6b41">
+                <span style="width:6px;height:6px;border-radius:50%;background:#4f9c4a;animation:scoutPulse 1.9s ease-in-out infinite;display:inline-block"></span>live
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:none;padding:0 28px 34px">
+        <button style="width:100%;border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">Take me to my trip</button>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1100}}">
+class Component extends DCLogic {
+  state = {
+    tastes: ["tasting", "art"],
+    dial: 6,
+    ceiling: "200",
+    perms: { free: true, hold: true, book: false, move: false }
+  };
+
+  /* Pixel figure — the characters from the trip feed. */
+  pixel(variant, color, size) {
+    const BODY = [
+      "....ssssss....", "....sesses....", "....ssssss....",
+      "...hhhhhhhh...", "..hhhhhhhhhh..", "..hhhhhhhhhh..", "..hhhhhhhhhh..",
+      "...hhhhhhhh...", "...hhhhhhhh...",
+      "...kkkkkkkk...", "...kkk..kkk...", "...kkk..kkk...", "...kkk..kkk...",
+      "..wwww..wwww.."
+    ];
+    const TOPS = {
+      strips:  ["......kk......", ".....kkkk.....", "....kkkkkk....", "...kkkkkkkk..."],
+      ears:    ["......pp......", ".....kkkk.....", "....kkkkkk....", "...kkkkkkkk..."],
+      antenna: ["....kkkkkk....", "...kkkkkkkk...", "...kkkkkkkk...", "...kkkkkkkkkk"],
+      brim:    ["....kkkkkk....", "...kkkkkkkk...", "..kkkkkkkkkk..", "..k.kkkkkkk.k."],
+      spine:   ["....kkkkkk....", "....kkkkkk....", "...kkkkkkkk...", ".kkkkkkkkkkkk."]
+    };
+    const rows = (TOPS[variant] || TOPS.strips).concat(BODY);
+    const pal = { k: "#2b303c", s: "#e8c9a6", e: "#151821", w: "#ffffff", h: color, p: "#cfd8e6" };
+    const cells = [];
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const c = row[x];
+        if (c === ".") { x++; continue; }
+        let n = 1;
+        while (row[x + n] === c) n++;
+        cells.push(React.createElement("rect", { key: y + "-" + x, x, y, width: n, height: 1, fill: pal[c] }));
+        x += n;
+      }
+    });
+    return React.createElement("svg", {
+      viewBox: "0 0 14 " + rows.length, height: size, width: size * 14 / rows.length,
+      style: { display: "block", flex: "none", shapeRendering: "crispEdges" }
+    }, cells);
+  }
+
+  /* App mark: dusk squircle, ridge line, pixel scout on top. */
+  appIcon(size, radiusRatio) {
+    const e = React.createElement;
+    const r = size * (radiusRatio || 0.24);
+    return e("div", {
+      style: {
+        width: size, height: size, borderRadius: r, flex: "none", overflow: "hidden",
+        position: "relative", background: "linear-gradient(165deg,#7fb0dd 0%,#a9cbe8 46%,#dceaf2 100%)",
+        boxShadow: "0 " + Math.round(size * .06) + "px " + Math.round(size * .14) + "px rgba(31,42,74,.22), inset 0 0 0 1px rgba(255,255,255,.5)"
+      }
+    }, [
+      e("div", { key: "g", style: { position: "absolute", left: "-10%", top: "-25%", width: "70%", height: "70%", borderRadius: "50%", background: "radial-gradient(circle,rgba(255,255,255,.75),rgba(255,255,255,0) 70%)" } }),
+      e("svg", { key: "ridge", viewBox: "0 0 100 100", width: size, height: size, style: { position: "absolute", inset: 0 } }, [
+        e("path", { key: "r1", d: "M0 78 L26 58 L44 72 L68 48 L100 74 L100 100 L0 100 Z", fill: "rgba(96,140,180,.35)" }),
+        e("path", { key: "r2", d: "M0 90 L30 74 L58 88 L82 72 L100 84 L100 100 L0 100 Z", fill: "rgba(70,112,152,.5)" })
+      ]),
+      e("div", { key: "p", style: { position: "absolute", left: "50%", top: "26%", transform: "translateX(-50%)" } },
+        this.pixel("brim", "#e2564a", size * 0.42))
+    ]);
+  }
+
+  /* Flat sticker motifs, drawn in the hand-illustrated palette. */
+  sticker(kind, size) {
+    const e = React.createElement;
+    const S = {
+      mushroom: [
+        ["path", { d: "M14 26 Q14 12 32 12 Q50 12 50 26 Q50 30 32 30 Q14 30 14 26 Z", fill: "#8a5a3b" }],
+        ["path", { d: "M22 27 Q22 20 32 20 Q42 20 42 27 Z", fill: "#a06e49" }],
+        ["path", { d: "M26 29 L26 50 Q32 54 38 50 L38 29 Z", fill: "#f0dcae" }]
+      ],
+      mug: [
+        ["rect", { x: 14, y: 20, width: 30, height: 28, rx: 7, fill: "#c9d3c4" }],
+        ["path", { d: "M44 27 q10 0 10 7 t-10 7", stroke: "#3c4a52", strokeWidth: 3.4, fill: "none", strokeLinecap: "round" }],
+        ["rect", { x: 18, y: 24, width: 22, height: 7, rx: 3.5, fill: "#7d4a33" }],
+        ["path", { d: "M29 38 l0 6 M26 41 l3-3 3 3", stroke: "#4a6b45", strokeWidth: 2.2, strokeLinecap: "round", fill: "none" }]
+      ],
+      trees: [
+        ["path", { d: "M18 46 L26 20 L34 46 Z", fill: "#4a6b45" }],
+        ["path", { d: "M32 48 L41 16 L50 48 Z", fill: "#3c5a3a" }],
+        ["rect", { x: 24, y: 44, width: 4, height: 8, fill: "#8a5a3b" }],
+        ["rect", { x: 39, y: 46, width: 4, height: 7, fill: "#8a5a3b" }]
+      ],
+      boots: [
+        ["path", { d: "M12 10 L24 10 L24 34 L38 40 Q46 43 46 50 L12 50 Z", fill: "#9a5c40" }],
+        ["rect", { x: 10, y: 48, width: 38, height: 6, rx: 3, fill: "#3c3230" }],
+        ["path", { d: "M15 18 h6 M15 26 h6", stroke: "#f0dcae", strokeWidth: 2.6, strokeLinecap: "round" }],
+        ["path", { d: "M28 38 q6 2 8 6", stroke: "#7d4530", strokeWidth: 2.4, fill: "none", strokeLinecap: "round" }]
+      ],
+      owl: [
+        ["ellipse", { cx: 32, cy: 34, rx: 15, ry: 17, fill: "#7d5a3f" }],
+        ["path", { d: "M17 22 L23 14 L27 22 Z M47 22 L41 14 L37 22 Z", fill: "#7d5a3f" }],
+        ["ellipse", { cx: 32, cy: 38, rx: 9, ry: 11, fill: "#f0dcae" }],
+        ["circle", { cx: 26, cy: 29, r: 3, fill: "#2b241f" }],
+        ["circle", { cx: 38, cy: 29, r: 3, fill: "#2b241f" }],
+        ["path", { d: "M32 32 l-3 4 h6 Z", fill: "#c98b3f" }]
+      ],
+      pack: [
+        ["path", { d: "M26 8 q6 -3 12 0 v8 h-12 Z", fill: "none", stroke: "#7a6f42", strokeWidth: 3 }],
+        ["rect", { x: 12, y: 16, width: 40, height: 40, rx: 11, fill: "#a89b62" }],
+        ["rect", { x: 12, y: 24, width: 40, height: 8, fill: "#6f6537" }],
+        ["rect", { x: 27, y: 20, width: 10, height: 16, rx: 4, fill: "#c9bd85" }],
+        ["rect", { x: 16, y: 38, width: 14, height: 14, rx: 4, fill: "#c9bd85" }],
+        ["rect", { x: 34, y: 38, width: 14, height: 14, rx: 4, fill: "#c9bd85" }]
+      ],
+      guitar: [
+        ["ellipse", { cx: 30, cy: 38, rx: 15, ry: 14, fill: "#b56a45" }],
+        ["circle", { cx: 30, cy: 38, r: 5, fill: "#4a3226" }],
+        ["rect", { x: 36, y: 12, width: 5, height: 22, rx: 2, transform: "rotate(12 38 23)", fill: "#7d4a33" }]
+      ],
+      book: [
+        ["rect", { x: 15, y: 14, width: 34, height: 36, rx: 4, fill: "#4a6b45" }],
+        ["rect", { x: 21, y: 21, width: 22, height: 16, rx: 2, fill: "#f0dcae" }],
+        ["path", { d: "M15 46 h34", stroke: "#3a5436", strokeWidth: 4 }]
+      ],
+      disco: [
+        ["circle", { cx: 32, cy: 36, r: 15, fill: "#b9c3cf" }],
+        ["path", { d: "M32 21 v30 M17 36 h30 M22 26 l20 20 M42 26 l-20 20", stroke: "#8b98a8", strokeWidth: 2 }],
+        ["rect", { x: 30, y: 10, width: 4, height: 10, fill: "#6f7780" }]
+      ],
+      flower: [
+        ["circle", { cx: 32, cy: 22, r: 6, fill: "#d4735f" }],
+        ["circle", { cx: 23, cy: 27, r: 5, fill: "#e0a05f" }],
+        ["circle", { cx: 41, cy: 27, r: 5, fill: "#e0a05f" }],
+        ["path", { d: "M32 30 v22", stroke: "#4a6b45", strokeWidth: 3, strokeLinecap: "round" }],
+        ["path", { d: "M32 40 q-8 -2 -10 -8 M32 46 q8 -2 10 -8", stroke: "#4a6b45", strokeWidth: 2.6, fill: "none", strokeLinecap: "round" }]
+      ],
+      coin: [
+        ["circle", { cx: 32, cy: 32, r: 16, fill: "#e0b45f" }],
+        ["circle", { cx: 32, cy: 32, r: 11, fill: "#f0dcae" }],
+        ["path", { d: "M32 24 v16 M27 28 h8 M27 36 h8", stroke: "#a67a2e", strokeWidth: 2.4, strokeLinecap: "round" }]
+      ],
+      compass: [
+        ["circle", { cx: 32, cy: 32, r: 17, fill: "#c9d3c4" }],
+        ["circle", { cx: 32, cy: 32, r: 12, fill: "#f4f7fa" }],
+        ["path", { d: "M32 20 L37 32 L32 44 L27 32 Z", fill: "#d4735f" }]
+      ]
+    };
+    const parts = (S[kind] || S.compass).map((p, i) => e(p[0], Object.assign({ key: i }, p[1])));
+    return e("svg", { viewBox: "0 0 64 64", width: size, height: size, style: { display: "block", flex: "none" } }, parts);
+  }
+
+  dots(active, total) {
+    const e = React.createElement;
+    const out = [];
+    for (let i = 0; i < total; i++) {
+      out.push(e("div", { key: i, style: { width: i === active ? 20 : 7, height: 7, borderRadius: 4, background: i === active ? "#22262b" : "#d3dae2" } }));
+    }
+    return out;
+  }
+
+  introArt(kind) {
+    const e = React.createElement;
+    if (kind === "swarm") {
+      const specs = [["strips", "#4f9c4a"], ["antenna", "#e2564a"], ["spine", "#3d8ee8"], ["brim", "#d99a2b"], ["ears", "#7c6fd0"]];
+      return e("div", { style: { display: "flex", alignItems: "flex-end", gap: 12 } },
+        specs.map((s, i) => e("div", { key: i, style: { animation: "scoutBob " + (2.6 + i * .35) + "s ease-in-out infinite" } }, this.pixel(s[0], s[1], 62 + (i % 2) * 10))));
+    }
+    if (kind === "citation") {
+      return e("div", { style: { display: "flex", flexDirection: "column", gap: 12, alignItems: "center" } }, [
+        e("div", { key: "row", style: { display: "flex", alignItems: "flex-end", gap: 14 } }, [
+          e("div", { key: "p" }, this.pixel("antenna", "#e2564a", 70)),
+          e("div", { key: "c", style: { background: "#ffffff", borderRadius: 16, padding: "12px 14px", boxShadow: "0 0 0 1px rgba(27,31,36,.07)", display: "flex", flexDirection: "column", gap: 6, width: 150 } }, [
+            e("div", { key: "1", style: { height: 6, borderRadius: 3, background: "#dfe5ec" } }),
+            e("div", { key: "2", style: { height: 6, borderRadius: 3, background: "#dfe5ec", width: "72%" } }),
+            e("div", { key: "3", style: { display: "flex", alignItems: "center", gap: 6, fontSize: 10, color: "#67707a", fontFamily: "'DM Sans',sans-serif" } }, [
+              e("div", { key: "d", style: { width: 8, height: 8, borderRadius: "50%", background: "#3d8ee8" } }), "cited source"
+            ])
+          ])
+        ]),
+        e("div", { key: "st", style: { display: "flex", gap: 10 } }, [this.sticker("mug", 40), this.sticker("book", 40), this.sticker("flower", 40)])
+      ]);
+    }
+    return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 14 } }, [
+      e("div", { key: "a", style: { display: "flex", gap: 12 } }, [this.sticker("trees", 52), this.sticker("owl", 52), this.sticker("mushroom", 52)]),
+      e("div", { key: "b", style: { display: "flex", gap: 12, alignItems: "flex-end" } }, [this.sticker("boots", 46), this.pixel("brim", "#d99a2b", 66), this.sticker("pack", 46)])
+    ]);
+  }
+
+  renderVals() {
+    const st = this.state;
+    const ring = on => on ? "0 0 0 2px #22262b" : "0 0 0 1px rgba(27,31,36,.07)";
+
+    const tasteDefs = [
+      { id: "tasting", label: "Chef tasting menus", art: "mug" },
+      { id: "art", label: "Contemporary art", art: "book" },
+      { id: "walks", label: "Long walks, no plan", art: "boots" },
+      { id: "music", label: "Live music, small rooms", art: "guitar" },
+      { id: "markets", label: "Markets and makers", art: "flower" },
+      { id: "late", label: "Late nights", art: "disco" }
+    ];
+    const ceilDefs = [
+      { id: "60", label: "Up to €60", note: "Coffees, entries, small plates", art: "coin" },
+      { id: "200", label: "Up to €200", note: "A dinner for two, a private view", art: "mushroom" },
+      { id: "500", label: "Up to €500", note: "A day charter, a tasting with wine", art: "compass" },
+      { id: "ask", label: "Always ask me", note: "I'll hold things, never commit", art: "owl" }
+    ];
+    const permDefs = [
+      { id: "free", label: "Add anything free", note: "Openings, markets, viewpoints" },
+      { id: "hold", label: "Hold a table or a seat", note: "Reversible, nothing charged" },
+      { id: "book", label: "Book inside the ceiling", note: "Charges my card up to €200" },
+      { id: "move", label: "Reshuffle my day", note: "Shuffle stops to fit something good" }
+    ];
+    const dialWords = ["Nothing unasked", "Barely", "Cautious", "Gentle", "Open", "Curious", "Adventurous", "Bold", "Reckless", "Anything remarkable"];
+
+    return {
+      iconSizes: [
+        { label: "180px", node: this.appIcon(96) },
+        { label: "120px", node: this.appIcon(64) },
+        { label: "60px", node: this.appIcon(44) },
+        { label: "29px", node: this.appIcon(29) }
+      ],
+      homeIcons: [
+        { label: "Scout", node: this.appIcon(56) },
+        { label: "Trips", node: React.createElement("div", { style: { width: 56, height: 56, borderRadius: 14, background: "linear-gradient(160deg,#cfe6d8,#9ec4b4)", display: "flex", alignItems: "center", justifyContent: "center" } }, this.sticker("compass", 34)) },
+        { label: "Journal", node: React.createElement("div", { style: { width: 56, height: 56, borderRadius: 14, background: "linear-gradient(160deg,#f3e6c9,#e2c79c)", display: "flex", alignItems: "center", justifyContent: "center" } }, this.sticker("book", 34)) }
+      ],
+      splashIcon: this.appIcon(112, 0.26),
+      intros: [
+        { step: "1 of 3", wash: "linear-gradient(160deg,#eaf6ef,#eef5fb)", title: "I'll keep an eye out all trip", body: "Five of us take posts around the city — tables, events, local word — and keep looking the whole time you're there, not just while you plan.", cta: "Next", dots: this.dots(0, 3), art: this.introArt("swarm") },
+        { step: "2 of 3", wash: "linear-gradient(160deg,#e7f1fb,#f2f8fb)", title: "Look what I found, and where I found it", body: "Every card carries the source, the moment I spotted it and how sure I am. You can always open the original.", cta: "Next", dots: this.dots(1, 3), art: this.introArt("citation") },
+        { step: "3 of 3", wash: "linear-gradient(160deg,#f5f8ec,#e8f2fb)", title: "Now tell me what you'd cross town for", body: "Four questions, then I'll keep learning from what you keep and what you wave off.", cta: "Ask away", dots: this.dots(2, 3), art: this.introArt("place") }
+      ],
+      tastes: tasteDefs.map(t => {
+        const on = st.tastes.includes(t.id);
+        return {
+          label: t.label, art: this.sticker(t.art, 40),
+          bg: on ? "#eaf3fb" : "#ffffff", ring: ring(on),
+          toggle: () => this.setState(s => ({ tastes: on ? s.tastes.filter(x => x !== t.id) : s.tastes.concat(t.id) }))
+        };
+      }),
+      tasteCount: st.tastes.length,
+      dialArt: this.pixel(st.dial > 6 ? "ears" : "brim", st.dial > 6 ? "#7c6fd0" : "#d99a2b", 76),
+      dialLabel: dialWords[st.dial - 1],
+      dialSteps: Array.from({ length: 10 }, (_, i) => ({
+        bg: i < st.dial ? "#6fa8dc" : "#e4ecf3",
+        set: () => this.setState({ dial: i + 1 })
+      })),
+      dialBody: st.dial >= 8
+        ? "At this setting I'll bring you things well outside your usual pattern — a one-night rooftop, a boat leaving in an hour — as long as they fit your ceiling."
+        : st.dial <= 3
+          ? "I'll stay close to what you asked for and only tap you when something you've booked changes."
+          : "I'll keep to things near your taste and only interrupt when something probably won't hang around.",
+      ceilings: ceilDefs.map(c => {
+        const on = st.ceiling === c.id;
+        return {
+          label: c.label, note: c.note, art: this.sticker(c.art, 38),
+          bg: on ? "#eaf3fb" : "#ffffff", ring: ring(on),
+          dot: on ? "#22262b" : "transparent", dotRing: on ? "none" : "inset 0 0 0 1.5px #cfd6de",
+          set: () => this.setState({ ceiling: c.id })
+        };
+      }),
+      perms: permDefs.map(p => {
+        const on = !!st.perms[p.id];
+        return {
+          label: p.label, note: p.note,
+          track: on ? "#4f9c4a" : "#dfe5ec", justify: on ? "flex-end" : "flex-start",
+          toggle: () => this.setState(s => ({ perms: Object.assign({}, s.perms, { [p.id]: !s.perms[p.id] }) }))
+        };
+      }),
+      roster: [
+        { name: "Social Scout", watching: "12 accounts, 4 hashtags", art: this.pixel("strips", "#4f9c4a", 34) },
+        { name: "Reservation Scout", watching: "9 waitlists", art: this.pixel("antenna", "#e2564a", 34) },
+        { name: "Events Scout", watching: "6 listings, 3 mailing lists", art: this.pixel("spine", "#3d8ee8", 34) },
+        { name: "Local Scout", watching: "2 news desks, city notices", art: this.pixel("brim", "#d99a2b", 34) },
+        { name: "Triage Agent", watching: "ranking against your profile", art: this.pixel("ears", "#7c6fd0", 34) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

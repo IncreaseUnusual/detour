@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+  html, body { margin: 0; background: #dcebf6; }
+  a { color: #3d8ee8; }
+  a:hover { color: #2c6cb5; }
+  button { font: inherit; cursor: pointer; }
+  button:focus-visible { outline: 2px solid #3d8ee8; outline-offset: 2px; }
+  #dc-root div { scrollbar-width: none; -ms-overflow-style: none; }
+  #dc-root div::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  @keyframes scoutBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes scoutPulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:radial-gradient(60% 45% at 15% 10%, #eaf6f7 0%, rgba(234,246,247,0) 60%), radial-gradient(55% 40% at 88% 78%, #eef6fb 0%, rgba(238,246,251,0) 60%), linear-gradient(170deg,#d9ebf7 0%,#e8f2f9 55%,#dfeef7 100%);font-family:'DM Sans',system-ui,sans-serif;color:#1b1f24;padding:48px 32px 72px;display:flex;flex-direction:column;gap:36px;align-items:center">
+
+  <div style="display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;max-width:560px">
+    <div style="font-family:'Newsreader',serif;font-size:28px;line-height:1.15">Scout dresses for where you are</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#67707a">Landing in a new country changes Scout's outfit, the app icon, and which agents take posts. Two countries in this pass.</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px;justify-content:center">
+    <sc-for list="{{ places }}" as="p" hint-placeholder-count="2">
+      <div style="width:380px;height:800px;border-radius:44px;background:{{ p.frameBg }};box-shadow:0 0 0 1px rgba(27,31,36,.06), 0 24px 56px rgba(31,58,102,.16);overflow:hidden;display:flex;flex-direction:column">
+
+        <div style="height:42px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;font-size:13px;font-weight:500">
+          <span>{{ p.clock }}</span>
+          <span style="display:flex;gap:6px;align-items:center">
+            <svg width="16" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"></rect><rect x="5" y="5.5" width="3" height="6.5" rx="1"></rect><rect x="10" y="3" width="3" height="9" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1"></rect></svg>
+            <span style="width:22px;height:11px;border:1.4px solid #1b1f24;border-radius:3px;display:inline-block;position:relative"><span style="position:absolute;inset:1.6px;background:#1b1f24;border-radius:1.5px;display:block"></span></span>
+          </span>
+        </div>
+
+        <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:18px;padding:10px 22px 24px">
+
+          <div style="border-radius:30px;background:{{ p.heroWash }};padding:22px 20px 20px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:{{ p.kickerColor }}">{{ p.kicker }}</div>
+            <div style="animation:scoutBob 3.6s ease-in-out infinite">{{ p.figure }}</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-family:'Newsreader',serif;font-size:30px;line-height:1.12">{{ p.title }}</div>
+              <div style="font-size:13px;color:#5d6771">{{ p.sub }}</div>
+            </div>
+            <div style="font-size:14px;line-height:1.5;color:#3d454c;max-width:270px;text-wrap:pretty">{{ p.line }}</div>
+          </div>
+
+          <div style="background:#ffffff;border-radius:26px;padding:16px 18px;box-shadow:0 0 0 1px rgba(27,31,36,.05);display:flex;align-items:center;gap:16px">
+            {{ p.icon }}
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <div style="font-size:14.5px;font-weight:500">{{ p.iconTitle }}</div>
+              <div style="font-size:12px;line-height:1.4;color:#67707a">{{ p.iconNote }}</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font-family:'Newsreader',serif;font-size:19px">{{ p.rosterTitle }}</div>
+            <div style="background:#ffffff;border-radius:26px;padding:16px 18px;box-shadow:0 0 0 1px rgba(27,31,36,.05);display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ p.roster }}" as="r" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="flex:none;width:30px;display:flex;justify-content:center">{{ r.mark }}</div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                    <div style="font-size:14px;font-weight:500">{{ r.name }}</div>
+                    <div style="font-size:11.5px;color:#8a9199">{{ r.watching }}</div>
+                  </div>
+                  <div style="flex:none;display:flex;align-items:center;gap:6px;font-size:11px;color:#3d6b41">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#4f9c4a;animation:scoutPulse 1.9s ease-in-out infinite;display:inline-block"></span>live
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">What changed</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ p.changes }}" as="c" hint-placeholder-count="3">
+                <span style="background:#ffffff;border-radius:999px;padding:8px 13px;font-size:12px;color:#4a5259;box-shadow:0 0 0 1px rgba(27,31,36,.06)">{{ c }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;padding:0 22px 20px;display:flex;flex-direction:column;gap:10px">
+          <button style="border:none;border-radius:999px;background:#22262b;color:#f8fafc;padding:17px;font-size:15px;font-weight:500">{{ p.cta }}</button>
+          <button style="border:none;border-radius:999px;background:#eef2f7;color:#4a5259;padding:15px;font-size:14px">Keep the old outfit</button>
+        </div>
+        <div style="flex:none;display:flex;justify-content:center;padding-bottom:10px">
+          <div style="width:134px;height:5px;border-radius:3px;background:#1b1f24"></div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="width:100%;max-width:900px;background:#ffffff;border-radius:32px;padding:28px 32px;box-shadow:0 0 0 1px rgba(27,31,36,.05);display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:6px;max-width:250px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a9199">Icon set</div>
+      <div style="font-family:'Newsreader',serif;font-size:22px;line-height:1.2">The mark follows the outfit</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#67707a">Same dusk ridge, same silhouette, different hat. It swaps on the home screen when you land.</div>
+    </div>
+    <div style="display:flex;gap:26px;flex-wrap:wrap">
+      <sc-for list="{{ iconRow }}" as="i" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+          {{ i.node }}
+          <div style="font-size:11px;color:#67707a">{{ i.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:1000}}">
+const PAL = {
+  k: "#22262b", s: "#e8c9a6", e: "#151821", w: "#ffffff",
+  g: "#14161c",              // songkok
+  n: "#2f3d63",              // baju navy
+  c: "#eddfae", d: "#c9a3c0", // sampin cream + motif
+  t: "#c2a373", b: "#6b4a2e", y: "#e2c268", // hat tan, belt, buckle
+  j: "#5b7fb0", u: "#93b7d8", l: "#8a5636"  // jeans, denim shirt, boots
+};
+
+const SPRITES = {
+  /* Baju melayu with songkok and sampin */
+  malaysia: [
+    "...gggggggg...",
+    "...gggggggg...",
+    "....ssssss....",
+    "....sesses....",
+    "....ssssss....",
+    "...nnnnnnnn...",
+    "..nnnnnwnnnn..",
+    "..nnnnnwnnnn..",
+    "..nnnnnnnnnn..",
+    "...nnnnnnnn...",
+    "...cccccccc...",
+    "...cccccccc...",
+    "....cddcdc....",
+    "...cccccccc...",
+    "...nnn..nnn...",
+    "...nnn..nnn...",
+    "..kkkk..kkkk.."
+  ],
+  /* Cowboy: wide-brim hat, denim shirt, belt, jeans, boots */
+  texas: [
+    "....tttttt....",
+    "....tttttt....",
+    "...tttttttt...",
+    ".tttttttttttt.",
+    "....ssssss....",
+    "....sesses....",
+    "....ssssss....",
+    "...uuuuuuuu...",
+    "..uuuuuwuuuu..",
+    "..uuuuuwuuuu..",
+    "..uuuuuuuuuu..",
+    "...uuuuuuuu...",
+    "...bbbbbbbb...",
+    "...bbbyybbb...",
+    "...jjjjjjjj...",
+    "...jjj..jjj...",
+    "...jjj..jjj...",
+    "..llll..llll.."
+  ]
+};
+
+class Component extends DCLogic {
+  pixel(kind, size, extra) {
+    const rows = SPRITES[kind];
+    const cells = [];
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const ch = row[x];
+        if (ch === ".") { x++; continue; }
+        let n = 1;
+        while (row[x + n] === ch) n++;
+        cells.push(React.createElement("rect", { key: y + "-" + x, x, y, width: n, height: 1, fill: PAL[ch] }));
+        x += n;
+      }
+    });
+    return React.createElement("svg", {
+      viewBox: "0 0 14 " + rows.length,
+      height: size, width: size * 14 / rows.length,
+      style: Object.assign({ display: "block", flex: "none", shapeRendering: "crispEdges" }, extra || {})
+    }, cells);
+  }
+
+  /* Hat-only mark for the roster rows */
+  hatMark(kind, size) {
+    const rows = SPRITES[kind].slice(0, kind === "malaysia" ? 2 : 4);
+    const cells = [];
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const ch = row[x];
+        if (ch === ".") { x++; continue; }
+        let n = 1;
+        while (row[x + n] === ch) n++;
+        cells.push(React.createElement("rect", { key: y + "-" + x, x, y, width: n, height: 1, fill: PAL[ch] }));
+        x += n;
+      }
+    });
+    return React.createElement("svg", { viewBox: "0 0 14 " + rows.length, width: size, height: size * rows.length / 14, style: { display: "block", flex: "none", shapeRendering: "crispEdges" } }, cells);
+  }
+
+  appIcon(kind, size) {
+    const e = React.createElement;
+    const r = size * 0.24;
+    return e("div", {
+      style: {
+        width: size, height: size, borderRadius: r, flex: "none", overflow: "hidden", position: "relative",
+        background: "linear-gradient(165deg,#7fb0dd 0%,#a9cbe8 46%,#dceaf2 100%)",
+        boxShadow: "0 " + Math.round(size * .06) + "px " + Math.round(size * .14) + "px rgba(31,42,74,.22), inset 0 0 0 1px rgba(255,255,255,.5)"
+      }
+    }, [
+      e("div", { key: "g", style: { position: "absolute", left: "-10%", top: "-25%", width: "70%", height: "70%", borderRadius: "50%", background: "radial-gradient(circle,rgba(255,255,255,.75),rgba(255,255,255,0) 70%)" } }),
+      e("svg", { key: "ridge", viewBox: "0 0 100 100", width: size, height: size, style: { position: "absolute", inset: 0 } }, [
+        e("path", { key: "r1", d: "M0 78 L26 58 L44 72 L68 48 L100 74 L100 100 L0 100 Z", fill: "rgba(96,140,180,.35)" }),
+        e("path", { key: "r2", d: "M0 90 L30 74 L58 88 L82 72 L100 84 L100 100 L0 100 Z", fill: "rgba(70,112,152,.5)" })
+      ]),
+      e("div", { key: "p", style: { position: "absolute", left: "50%", top: "22%", transform: "translateX(-50%)" } }, this.pixel(kind, size * 0.5))
+    ]);
+  }
+
+  renderVals() {
+    return {
+      places: [
+        {
+          clock: "20:04",
+          frameBg: "linear-gradient(180deg,#ffffff,#f3f8fc)",
+          heroWash: "linear-gradient(160deg,#eef3fb,#f6f1e2)",
+          kickerColor: "#5b6f9c",
+          kicker: "New country",
+          title: "You're in Malaysia",
+          sub: "Kuala Lumpur · GMT+8 · night one",
+          line: "Changed into a baju melayu while you were in the air. I've swapped who's out looking, too.",
+          figure: this.pixel("malaysia", 190),
+          icon: this.appIcon("malaysia", 62),
+          iconTitle: "Your icon changed",
+          iconNote: "Songkok Scout sits on your home screen while you're here.",
+          rosterTitle: "Who's out looking in KL",
+          roster: [
+            { name: "Hawker Scout", watching: "Jalan Alor, Kampung Baru stalls", mark: this.hatMark("malaysia", 28) },
+            { name: "Reservation Scout", watching: "7 waitlists, Bukit Bintang", mark: this.hatMark("malaysia", 28) },
+            { name: "Night Market Scout", watching: "pasar malam rotation by night", mark: this.hatMark("malaysia", 28) },
+            { name: "Rain Scout", watching: "afternoon storms, indoor swaps", mark: this.hatMark("malaysia", 28) }
+          ],
+          changes: ["Songkok on", "Hawker Scout added", "Rain Scout added", "Ski Scout stood down", "Prices in RM"],
+          cta: "Go have a look"
+        },
+        {
+          clock: "7:12",
+          frameBg: "linear-gradient(180deg,#fffdf8,#f4f8fb)",
+          heroWash: "linear-gradient(160deg,#f7efe0,#eef4fb)",
+          kickerColor: "#8a6a3c",
+          kicker: "New country",
+          title: "You're in Texas",
+          sub: "Austin · GMT-5 · morning one",
+          line: "Found myself a hat. Different city, different things worth crossing town for.",
+          figure: this.pixel("texas", 190),
+          icon: this.appIcon("texas", 62),
+          iconTitle: "Your icon changed",
+          iconNote: "Cowboy Scout takes the home screen until you leave.",
+          rosterTitle: "Who's out looking in Austin",
+          roster: [
+            { name: "Barbecue Scout", watching: "6 pits, line times from 6am", mark: this.hatMark("texas", 28) },
+            { name: "Honky-Tonk Scout", watching: "late sets on East 6th", mark: this.hatMark("texas", 28) },
+            { name: "Reservation Scout", watching: "5 waitlists downtown", mark: this.hatMark("texas", 28) },
+            { name: "Heat Scout", watching: "afternoon highs, shade routes", mark: this.hatMark("texas", 28) }
+          ],
+          changes: ["Hat on", "Barbecue Scout added", "Honky-Tonk Scout added", "Hawker Scout stood down", "Prices in USD"],
+          cta: "Go have a look"
+        }
+      ],
+      iconRow: [
+        { label: "Malaysia", node: this.appIcon("malaysia", 76) },
+        { label: "Texas", node: this.appIcon("texas", 76) },
+        { label: "Malaysia · 29px", node: this.appIcon("malaysia", 29) },
+        { label: "Texas · 29px", node: this.appIcon("texas", 29) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

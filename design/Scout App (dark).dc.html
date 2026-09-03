@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="_ds/nocturne-f77f5eef-7416-44b8-bfa1-cded70e54e17/styles.css">
+<script src="_ds/nocturne-f77f5eef-7416-44b8-bfa1-cded70e54e17/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin: 0; background: #161826; }
+  a { color: var(--color-accent-300); }
+  a:hover { color: var(--color-accent-200); }
+  @keyframes scoutPulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+  @keyframes scoutIn { from { transform: translateY(-120%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes scoutRise { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:radial-gradient(120% 80% at 50% -10%, #21243a 0%, #161826 55%);font-family:var(--font-body);color:var(--color-text);display:flex;flex-direction:column;align-items:center;gap:22.4px;padding:44px 16.8px 56px">
+
+  <div style="display:flex;flex-direction:column;gap:5.6px;align-items:center;text-align:center;max-width:520px">
+    <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-400)">Scout · traveler app</div>
+    <div style="font-size:13px;line-height:1.5;color:var(--color-neutral-500)">A standing swarm injects time-sensitive finds into the trip, each with a citation. Tap a card.</div>
+  </div>
+
+  <div style="position:relative;width:390px;height:800px;border-radius:38px;background:var(--color-bg);box-shadow:0 0 0 1px var(--color-neutral-800), 0 0 0 9px #1d1f2c, 0 30px 80px rgba(0,0,0,.7);overflow:hidden;display:flex;flex-direction:column">
+
+    <div style="height:38px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22.4px 5.6px;font-size:11px;color:var(--color-neutral-400)">
+      <span>20:04</span>
+      <span style="display:flex;gap:5.6px;align-items:center"><span>LTE</span><span style="width:20px;height:9px;border:1px solid var(--color-neutral-600);border-radius:2px;display:inline-block;position:relative"><span style="position:absolute;inset:1.5px;right:6px;background:var(--color-neutral-400);border-radius:1px;display:block"></span></span></span>
+    </div>
+
+    <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ true }}">
+      <div onClick="{{ openLive }}" style="position:absolute;top:44px;left:11.2px;right:11.2px;z-index:5;background:#2a2d3f;border-radius:14px;box-shadow:0 0 0 1px var(--color-accent-700), 0 14px 34px rgba(0,0,0,.6);padding:11.2px;display:flex;gap:11.2px;align-items:flex-start;cursor:pointer;animation:scoutIn .45s cubic-bezier(.2,.9,.2,1)">
+        <div style="flex:none;width:34px;height:34px;border-radius:8px;background:var(--color-accent-900);display:flex;align-items:flex-end;justify-content:center;overflow:hidden">{{ liveSprite }}</div>
+        <div style="display:flex;flex-direction:column;gap:2.8px;min-width:0">
+          <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-400)">Scout · Reservation Scout</div>
+          <div style="font-size:13px;line-height:1.4;color:var(--color-neutral-200)">A table just opened at Belcanto for tonight, 20:00. Found 42s ago. Hold expires in 10 min.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ onFeed }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column">
+
+        <div style="padding:16.8px 22.4px 11.2px;display:flex;flex-direction:column;gap:16.8px;border-bottom:1px solid var(--color-divider)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:11.2px">
+            <div style="display:flex;flex-direction:column;gap:2.8px">
+              <div style="font-family:var(--font-heading);font-weight:500;font-size:22px;letter-spacing:-.01em">Lisbon</div>
+              <div style="font-size:12px;color:var(--color-neutral-500)">Fri 12 – Sun 14 · Elena &amp; Marc</div>
+            </div>
+            <span class="tag tag-accent" style="display:flex;align-items:center;gap:5.6px"><span style="width:6px;height:6px;border-radius:50%;background:var(--color-accent);animation:scoutPulse 1.6s ease-in-out infinite;display:inline-block"></span>Swarm armed</span>
+          </div>
+
+          <sc-if value="{{ showSwarm }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:8.4px">
+              <div style="display:flex;gap:11.2px;align-items:flex-end">
+                <sc-for list="{{ agents }}" as="agent" hint-placeholder-count="5">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:5.6px;flex:1">
+                    <div style="height:40px;display:flex;align-items:flex-end">{{ agent.sprite }}</div>
+                    <div style="font-size:9px;line-height:1.2;text-align:center;color:var(--color-neutral-500);letter-spacing:.02em">{{ agent.short }}</div>
+                    <div style="width:5px;height:5px;border-radius:50%;background:var(--color-accent);animation:scoutPulse 1.9s ease-in-out infinite"></div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:11px;color:var(--color-neutral-600)">{{ scanned }} signals scanned today · 4 kept · last poll {{ lastPoll }}</div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="padding:16.8px 16.8px 28px;display:flex;flex-direction:column;gap:11.2px">
+          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600);padding:0 5.6px">Signal feed</div>
+
+          <sc-for list="{{ cards }}" as="card" hint-placeholder-count="4">
+            <div onClick="{{ card.open }}" class="card" style="padding:0;overflow:hidden;cursor:pointer;animation:scoutRise .4s ease-out;background:var(--color-surface);border-radius:14px;box-shadow:var(--shadow-sm)">
+              <div style="display:flex;gap:11.2px;padding:11.2px">
+                <div style="flex:none;width:80px;height:96px;border-radius:8px;overflow:hidden;background:#1d1f2c">
+                  <image-slot id="{{ card.slotId }}" shape="rect" fit="cover" placeholder="Drop photo"></image-slot>
+                </div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5.6px">
+                  <div style="display:flex;align-items:center;gap:5.6px">
+                    <div style="flex:none;width:22px;height:26px;display:flex;align-items:flex-end">{{ card.sprite }}</div>
+                    <div style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-accent-400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ card.agent }}</div>
+                  </div>
+                  <div style="font-family:var(--font-heading);font-weight:500;font-size:15px;line-height:1.25;text-wrap:pretty">{{ card.title }}</div>
+                  <div style="font-size:11.5px;color:var(--color-neutral-500);line-height:1.4">{{ card.meta }}</div>
+                  <div style="display:flex;gap:5.6px;align-items:center;margin-top:auto">
+                    <span class="tag tag-outline" style="font-size:9.5px">{{ card.matchLabel }}</span>
+                    <span style="font-size:10.5px;color:var(--color-neutral-600)">{{ card.status }}</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:5.6px;padding:8.4px 11.2px;background:#1e2030;border-top:1px solid var(--color-divider);font-size:10.5px;color:var(--color-neutral-400)">
+                <svg width="12" height="12" viewBox="0 0 256 256" fill="currentColor" style="flex:none;color:var(--color-accent-400)"><path d="M128 24a104 104 0 1 0 104 104A104.1 104.1 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88 88.1 88.1 0 0 1-88 88Zm12-88.7V80a12 12 0 0 0-24 0v54a12 12 0 0 0 6 10.4l40 23.1a12 12 0 1 0 12-20.8Z"></path></svg>
+                <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ card.citation }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ onDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column">
+        <div style="position:relative;height:280px;flex:none;background:#1d1f2c">
+          <image-slot id="{{ sel.heroId }}" shape="rect" fit="cover" placeholder="Drop a hero photo"></image-slot>
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, rgba(22,24,38,.75) 0%, rgba(22,24,38,0) 40%, rgba(22,24,38,.9) 100%)"></div>
+          <button onClick="{{ back }}" class="btn btn-ghost btn-icon" style="position:absolute;top:11.2px;left:11.2px;background:rgba(22,24,38,.7)">
+            <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M224 128a8 8 0 0 1-8 8H59.3l58.4 58.3a8 8 0 0 1-11.4 11.4l-72-72a8 8 0 0 1 0-11.4l72-72a8 8 0 0 1 11.4 11.4L59.3 120H216a8 8 0 0 1 8 8Z"></path></svg>
+          </button>
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:28px 22.4px 16.8px;background:linear-gradient(180deg, rgba(22,24,38,0), rgba(22,24,38,.88) 55%, rgba(22,24,38,.96));display:flex;flex-direction:column;gap:5.6px;pointer-events:none">
+            <div style="display:flex;align-items:center;gap:5.6px">
+              <div style="flex:none;width:22px;height:28px;display:flex;align-items:flex-end;overflow:hidden">{{ sel.sprite }}</div>
+              <span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-300)">{{ sel.agent }}</span>
+            </div>
+            <div style="font-family:var(--font-heading);font-weight:500;font-size:24px;line-height:1.15;letter-spacing:-.01em;text-wrap:pretty">{{ sel.title }}</div>
+          </div>
+        </div>
+
+        <div style="padding:16.8px 22.4px 28px;display:flex;flex-direction:column;gap:16.8px">
+          <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-300)">{{ sel.blurb }}</div>
+
+          <div style="display:flex;gap:8.4px;flex-wrap:wrap">
+            <span class="tag tag-accent">{{ sel.matchLabel }}</span>
+            <span class="tag tag-neutral">{{ sel.price }}</span>
+            <span class="tag tag-outline">{{ sel.when }}</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8.4px">
+            <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600)">Why Scout kept it</div>
+            <sc-for list="{{ sel.reasons }}" as="reason" hint-placeholder-count="3">
+              <div style="display:flex;gap:8.4px;font-size:12.5px;line-height:1.45;color:var(--color-neutral-300)">
+                <span style="flex:none;width:14px;height:1px;background:var(--color-accent);margin-top:9px"></span>
+                <span>{{ reason }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:var(--color-surface);border-radius:14px;box-shadow:var(--shadow-sm);padding:14px;display:flex;flex-direction:column;gap:8.4px">
+            <div style="display:flex;align-items:center;gap:5.6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-400)">
+              <svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor"><path d="M208 32H80a24 24 0 0 0-24 24v8h-8a24 24 0 0 0-24 24v112a24 24 0 0 0 24 24h112a24 24 0 0 0 24-24v-8h8a24 24 0 0 0 24-24V56a24 24 0 0 0-24-24Zm-40 168a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V88a8 8 0 0 1 8-8h112a8 8 0 0 1 8 8Zm48-32a8 8 0 0 1-8 8h-8V88a24 24 0 0 0-24-24H72v-8a8 8 0 0 1 8-8h128a8 8 0 0 1 8 8Z"></path></svg>
+              Citation
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5.6px;font-size:12px;color:var(--color-neutral-400)">
+              <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Source</span><span style="text-align:right;color:var(--color-neutral-200)">{{ sel.source }}</span></div>
+              <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Captured</span><span style="text-align:right;color:var(--color-neutral-200)">{{ sel.captured }}</span></div>
+              <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Extraction confidence</span><span style="text-align:right;color:var(--color-neutral-200)">{{ sel.confidence }}</span></div>
+              <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Pipeline</span><span style="text-align:right;color:var(--color-neutral-200)">{{ sel.pipeline }}</span></div>
+            </div>
+            <a href="#" onClick="{{ noop }}" style="font-size:12px;text-decoration:none">Open original {{ sel.link }}</a>
+          </div>
+        </div>
+
+        <div style="margin-top:auto;flex:none;padding:11.2px 22.4px 22.4px;background:linear-gradient(180deg, rgba(22,24,38,0), var(--color-bg) 40%);display:flex;flex-direction:column;gap:8.4px">
+          <sc-if value="{{ sel.hasHold }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--color-neutral-400)">
+              <span>Hold expires</span><span style="font-variant-numeric:tabular-nums;color:var(--color-accent-300)">{{ countdown }}</span>
+            </div>
+          </sc-if>
+          <div style="display:flex;gap:8.4px">
+            <button onClick="{{ confirmHold }}" class="btn btn-primary btn-block">{{ sel.cta }}</button>
+            <button onClick="{{ dismiss }}" class="btn btn-ghost">Dismiss</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ onConfirm }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:22.4px;padding:22.4px">
+        <div style="display:flex;flex-direction:column;gap:11.2px;align-items:flex-start">
+          <div style="width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--color-accent-700);background:var(--color-accent-900);color:var(--color-accent-300)">
+            <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor"><path d="m229.7 90.3-128 128a8 8 0 0 1-11.4 0l-56-56a8 8 0 0 1 11.4-11.3L96 201.4 218.3 79a8 8 0 0 1 11.4 11.3Z"></path></svg>
+          </div>
+          <div style="font-family:var(--font-heading);font-weight:500;font-size:26px;line-height:1.15;letter-spacing:-.01em">{{ confirmTitle }}</div>
+          <div style="font-size:13px;line-height:1.55;color:var(--color-neutral-400);text-wrap:pretty">{{ confirmBody }}</div>
+        </div>
+        <div style="background:var(--color-surface);border-radius:14px;box-shadow:var(--shadow-sm);padding:14px;display:flex;flex-direction:column;gap:8.4px;font-size:12px;color:var(--color-neutral-400)">
+          <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Added to</span><span style="color:var(--color-neutral-200)">Fri 12 · 20:00 slot</span></div>
+          <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Cited source</span><span style="color:var(--color-neutral-200);text-align:right">{{ sel.source }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:11.2px"><span style="color:var(--color-neutral-600)">Swarm</span><span style="color:var(--color-neutral-200)">still running · Lisbon</span></div>
+        </div>
+        <button onClick="{{ back }}" class="btn btn-secondary btn-block">Back to feed</button>
+      </div>
+    </sc-if>
+
+    <div style="flex:none;display:flex;border-top:1px solid var(--color-divider);background:#1a1c2a;padding:8.4px 0 16.8px">
+      <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="3">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2.8px;font-size:10px;letter-spacing:.04em;color:{{ tab.color }}">
+          <div style="height:18px;display:flex;align-items:center">{{ tab.icon }}</div>
+          {{ tab.label }}
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showSwarm&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;liveDelaySeconds&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:0,&quot;max&quot;:20,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+const BODY = [
+  "....ssssss....",
+  "....sesses....",
+  "....ssssss....",
+  "...hhhhhhhh...",
+  "..hhhhhhhhhh..",
+  "..hhhhhhhhhh..",
+  "..hhhhhhhhhh..",
+  "...hhhhhhhh...",
+  "...hhhhhhhh...",
+  "...kkkkkkkk...",
+  "...kkk..kkk...",
+  "...kkk..kkk...",
+  "...kkk..kkk...",
+  "..wwww..wwww.."
+];
+
+const TOPS = {
+  beanie: ["......kk......", ".....kkkk.....", "....kkkkkk....", "...kkkkkkkk..."],
+  pom:    ["......pp......", ".....kkkk.....", "....kkkkkk....", "...kkkkkkkk..."],
+  cap:    ["....kkkkkk....", "...kkkkkkkk...", "...kkkkkkkk...", "...kkkkkkkkkk"],
+  phones: ["....kkkkkk....", "...kkkkkkkk...", "..kkkkkkkkkk..", "..k.kkkkkkk.k."],
+  bucket: ["....kkkkkk....", "....kkkkkk....", "...kkkkkkkk...", ".kkkkkkkkkkkk."]
+};
+
+class Component extends DCLogic {
+  state = { screen: "feed", selId: "belcanto", secondsLeft: 598, banner: false, dismissed: [], confirmed: null };
+
+  componentDidMount() {
+    this.t = setInterval(() => this.setState(s => ({ secondsLeft: Math.max(0, s.secondsLeft - 1) })), 1000);
+    this.b = setTimeout(() => this.setState({ banner: true }), (this.props.liveDelaySeconds ?? 3) * 1000);
+    this.b2 = setTimeout(() => this.setState({ banner: false }), ((this.props.liveDelaySeconds ?? 3) + 7) * 1000);
+  }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.b); clearTimeout(this.b2); }
+
+  sprite(rows, hood, h) {
+    const pal = { k: "#4a4e60", s: "#e3c4a2", e: "#23252f", w: "#e4e7f5", h: hood, p: "#cfd3e5" };
+    const cells = [];
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const c = row[x];
+        if (c === ".") { x++; continue; }
+        let n = 1;
+        while (row[x + n] === c) n++;
+        cells.push(React.createElement("rect", { key: y + "-" + x, x, y, width: n, height: 1, fill: pal[c] }));
+        x += n;
+      }
+    });
+    const w = 14, hh = rows.length;
+    return React.createElement("svg", { viewBox: "0 0 " + w + " " + hh, height: h, width: h * w / hh, style: { imageRendering: "pixelated", shapeRendering: "crispEdges", display: "block" } }, cells);
+  }
+
+  agentSprite(a, h) { return this.sprite(TOPS[a.top].concat(BODY), a.hood, h); }
+
+  agents() {
+    return [
+      { id: "social", name: "Social Scout", short: "Social", hood: "#d99a2b", top: "beanie" },
+      { id: "resv", name: "Reservation Scout", short: "Resv", hood: "#968ae0", top: "cap" },
+      { id: "events", name: "Events Scout", short: "Events", hood: "#7d8f6b", top: "bucket" },
+      { id: "news", name: "Local Scout", short: "Local", hood: "#75798c", top: "phones" },
+      { id: "triage", name: "Triage Agent", short: "Triage", hood: "#b08a8a", top: "pom" }
+    ];
+  }
+
+  cardData() {
+    return [
+      {
+        id: "belcanto", agentId: "resv", title: "A table just opened at Belcanto, tonight 20:00",
+        meta: "Two seats · tasting menu · Chiado, 11 min away", status: "hold expiring",
+        match: 92, price: "€165 pp", when: "Tonight 20:00", hasHold: true, cta: "Hold the table",
+        citation: "Reservation feed · cancellation at 20:04:12",
+        source: "Belcanto availability feed", captured: "20:04:12 · 42s ago", confidence: "0.94",
+        pipeline: "Reservation Scout → Triage → Ranking", link: "↗",
+        blurb: "A two-cover cancellation cleared on the 20:00 seating. Reservation Scout has been watching this waitlist since Tuesday; the seats surfaced 42 seconds ago and typically go inside four minutes.",
+        reasons: ["Your taste profile weights chef tasting menus above all other dining", "Tonight 20:00–23:00 is the only unfilled block in your itinerary", "Inside your €200 spontaneous-add ceiling", "Cancellation, not a held allocation — this was not bookable an hour ago"],
+        confirmTitle: "Held for 10 minutes", confirmBody: "Two covers at Belcanto, 20:00 tonight. Scout will nudge you at 19:15 with the walking route. Nothing has been charged."
+      },
+      {
+        id: "rooftop", agentId: "social", title: "One-night rooftop takeover in Alfama",
+        meta: "Eight seats · 21:30 tomorrow · announced on a Story", status: "8 seats left",
+        match: 88, price: "€70 pp", when: "Sat 21:30", hasHold: false, cta: "Request a seat",
+        citation: "Instagram Story @tascadaalfama · 14 min ago",
+        source: "Instagram Story, @tascadaalfama", captured: "19:50 · 14 min ago", confidence: "0.81",
+        pipeline: "Social Scout → Triage → Ranking", link: "↗",
+        blurb: "A visiting chef is cooking a single seating on a private rooftop above Alfama. Announced in a Story that expires in ten hours, with no listing anywhere else.",
+        reasons: ["Matches your 'surprise me' dial at its current setting", "Small-format dining, low crowd tolerance respected", "Fifteen minutes from your hotel"],
+        confirmTitle: "Seat requested", confirmBody: "Scout messaged the host and will confirm the two seats within the hour."
+      },
+      {
+        id: "gallery", agentId: "events", title: "Private view — 'Atlântico' at Galeria Madragoa",
+        meta: "Free · Fri 19:00 · Santos, before your dinner", status: "auto-added",
+        match: 81, price: "Free", when: "Fri 19:00", hasHold: false, cta: "Keep in itinerary",
+        citation: "Gallery mailing list + Time Out Lisboa · 2h ago",
+        source: "Galeria Madragoa mailing list", captured: "18:02 · 2h ago", confidence: "0.88",
+        pipeline: "Events Scout → Triage → Ranking → auto-add", link: "↗",
+        blurb: "An opening night with the artist present, an hour before your dinner reservation and four streets from it. Free and non-committal, so Scout added it without asking.",
+        reasons: ["No cost and no commitment — inside your auto-add rules", "Contemporary art is your second-highest profile weight", "Slots cleanly into the 19:00 gap before dinner"],
+        confirmTitle: "Kept in your itinerary", confirmBody: "Friday 19:00, Galeria Madragoa. Scout will drop the address into your morning brief."
+      },
+      {
+        id: "closure", agentId: "news", title: "Miradouro de Santa Catarina closed for filming",
+        meta: "Through Saturday · your Sat 18:00 sunset stop", status: "advisory",
+        match: 74, price: "No cost", when: "Sat 18:00", hasHold: false, cta: "Swap for Santa Luzia",
+        citation: "Local news desk · 3h ago",
+        source: "Câmara Municipal notice, reported locally", captured: "17:10 · 3h ago", confidence: "0.91",
+        pipeline: "Local Scout → Triage → Ranking", link: "↗",
+        blurb: "A film permit closes the terrace all weekend. Scout found a west-facing alternative at the same distance from your Saturday afternoon.",
+        reasons: ["Directly affects a booked item in your itinerary", "Santa Luzia holds the same sunset aspect, seven minutes further", "Flagged as a change, not a suggestion — nothing was moved"],
+        confirmTitle: "Swapped", confirmBody: "Saturday sunset now points at Miradouro de Santa Luzia. The original entry is kept in your change log."
+      }
+    ];
+  }
+
+  tabIcon(path, active) {
+    return React.createElement("svg", { width: 18, height: 18, viewBox: "0 0 256 256", fill: "currentColor", style: { opacity: active ? 1 : .6 } }, React.createElement("path", { d: path }));
+  }
+
+  renderVals() {
+    const agents = this.agents();
+    const byId = {};
+    agents.forEach(a => { byId[a.id] = a; });
+    const screen = this.state.screen;
+    const cards = this.cardData().filter(c => !this.state.dismissed.includes(c.id));
+    const sel = this.cardData().find(c => c.id === this.state.selId) || this.cardData()[0];
+    const selAgent = byId[sel.agentId];
+    const s = this.state.secondsLeft;
+    const countdown = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    const conf = this.state.confirmed;
+
+    return {
+      agents: agents.map(a => ({ short: a.short, sprite: this.agentSprite(a, 40) })),
+      showSwarm: this.props.showSwarm ?? true,
+      showBanner: this.state.banner && screen === "feed",
+      liveSprite: this.agentSprite(byId.resv, 30),
+      scanned: "1,284",
+      lastPoll: "38s ago",
+      onFeed: screen === "feed",
+      onDetail: screen === "detail",
+      onConfirm: screen === "confirm",
+      countdown,
+      cards: cards.map(c => ({
+        title: c.title, meta: c.meta, status: c.status, citation: c.citation,
+        matchLabel: c.match + "% match", agent: byId[c.agentId].name,
+        sprite: this.agentSprite(byId[c.agentId], 26),
+        slotId: "scout-thumb-" + c.id,
+        open: () => this.setState({ screen: "detail", selId: c.id, banner: false })
+      })),
+      sel: {
+        title: sel.title, blurb: sel.blurb, reasons: sel.reasons, agent: selAgent.name,
+        sprite: this.agentSprite(selAgent, 28), heroId: "scout-hero-" + sel.id,
+        matchLabel: sel.match + "% match", price: sel.price, when: sel.when,
+        source: sel.source, captured: sel.captured, confidence: sel.confidence,
+        pipeline: sel.pipeline, link: sel.link, hasHold: sel.hasHold, cta: sel.cta
+      },
+      confirmTitle: (conf && conf.confirmTitle) || sel.confirmTitle,
+      confirmBody: (conf && conf.confirmBody) || sel.confirmBody,
+      openLive: () => this.setState({ screen: "detail", selId: "belcanto", banner: false }),
+      back: () => this.setState({ screen: "feed" }),
+      dismiss: () => this.setState(st => ({ screen: "feed", dismissed: st.dismissed.concat(sel.id) })),
+      confirmHold: () => this.setState({ screen: "confirm", confirmed: sel }),
+      noop: e => e.preventDefault(),
+      tabs: [
+        { label: "Feed", color: "var(--color-accent-300)", icon: this.tabIcon("M224 128a8 8 0 0 1-8 8h-56v56a8 8 0 0 1-16 0v-56H88a8 8 0 0 1 0-16h56V64a8 8 0 0 1 16 0v56h56a8 8 0 0 1 8 8ZM40 72a8 8 0 0 0 0 16h16a8 8 0 0 0 0-16Zm0 48a8 8 0 0 0 0 16h16a8 8 0 0 0 0-16Zm0 48a8 8 0 0 0 0 16h16a8 8 0 0 0 0-16Z", true) },
+        { label: "Itinerary", color: "var(--color-neutral-600)", icon: this.tabIcon("M208 32h-24v-8a8 8 0 0 0-16 0v8H88v-8a8 8 0 0 0-16 0v8H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16Zm0 176H48V96h160Zm0-128H48V48h24v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24Z", false) },
+        { label: "Profile", color: "var(--color-neutral-600)", icon: this.tabIcon("M128 24a104 104 0 1 0 104 104A104.1 104.1 0 0 0 128 24Zm0 40a36 36 0 1 1-36 36 36 36 0 0 1 36-36Zm0 152a88 88 0 0 1-61-24.6 72 72 0 0 1 122 0A88 88 0 0 1 128 216Z", false) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
